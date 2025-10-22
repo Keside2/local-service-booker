@@ -1,0 +1,96 @@
+.bookings-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.bookings-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.booking-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.status-badge.pending {
+  background-color: #f39c12;
+}
+
+.status-badge.confirmed {
+  background-color: #3498db;
+}
+
+.status-badge.completed {
+  background-color: #2ecc71;
+}
+
+.status-badge.cancelled {
+  background-color: #e74c3c;
+}
+
+.cancel-btn {
+  margin-top: 15px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #c0392b;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pagination button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #2980b9;
+}

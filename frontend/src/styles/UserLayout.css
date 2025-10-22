@@ -1,0 +1,85 @@
+.user-container { display: flex; min-height: 100vh; font-family: Arial,sans-serif; background:#f4f6f9; }
+.sidebar { width: 250px; background:#2d2d3a; color:white; display:flex; flex-direction:column; justify-content:space-between; position:fixed; top:0; bottom:0; left:0; padding:20px 0; transition:left 0.3s; }
+.sidebar h2 { text-align:center; font-size:22px; margin-bottom:30px; }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar ul li { margin:10px 0; }
+.sidebar ul li a { display:flex; align-items:center; padding:12px 20px; color:#ccc; text-decoration:none; font-size:16px; transition:0.3s; }
+.sidebar ul li a i { margin-right:10px; }
+.sidebar ul li a:hover,.sidebar ul li a.active { background:#007bff; color:#fff; border-radius:4px; }
+.logout-btn { background:#e74c3c; border:none; color:white; padding:12px 20px; margin:20px; cursor:pointer; border-radius:4px; display:flex; align-items:center; justify-content:center; }
+.logout-btn i { margin-right:10px; }
+.logout-btn:hover { background:#c0392b; }
+.main-content { margin-left:250px; flex-grow:1; padding:20px; width:100%; }
+.menu-toggle { display:none; position:fixed; top:15px; left:8px; background:#2d2d3a; color:white; border:none; padding:10px 12px; font-size:18px; cursor:pointer; z-index:1100; }
+.overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; }
+.overlay.show { display:block; }
+@media (max-width:768px) {
+  .sidebar {
+    left: -260px;
+    z-index: 2000; /* higher than overlay */
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .menu-toggle {
+    display: block;
+    z-index: 2100; /* keep button above sidebar */
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 10px;
+    position: relative;
+    z-index: 1; /* push main content below sidebar */
+  }
+}
+
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-profile-pic {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #4f46e5;
+}
+
+.sidebar-profile {
+  text-align: center;
+  margin: 15px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-profile:hover {
+  opacity: 0.9;
+  transform: scale(0.955);
+}
+
+.sidebar-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.sidebar-avatar.placeholder {
+  font-size: 80px;
+  color: #ccc;
+}
+
+.sidebar-username {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+

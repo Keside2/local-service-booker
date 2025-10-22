@@ -1,0 +1,101 @@
+/* =============================
+   Manual Booking Page Styles
+   ============================= */
+
+.manual-booking-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem 2.5rem;
+  font-family: "Inter", sans-serif;
+}
+
+.manual-booking-container h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+  text-align: center;
+}
+
+/* Form layout */
+.manual-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Label and inputs */
+.manual-booking-form label {
+  font-weight: 600;
+  color: #334155;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.manual-booking-form select,
+.manual-booking-form input[type="date"] {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #f9fafb;
+}
+
+.manual-booking-form select:focus,
+.manual-booking-form input[type="date"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background-color: #ffffff;
+}
+
+/* Grid for dates */
+.manual-booking-form .date-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Button */
+.manual-booking-form button {
+  margin-top: 0.8rem;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.manual-booking-form button:hover {
+  background: #1d4ed8;
+}
+
+.manual-booking-form button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Optional helper text or warning */
+.helper-text {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .manual-booking-container {
+    padding: 1.5rem;
+  }
+
+  .manual-booking-form .date-grid {
+    grid-template-columns: 1fr;
+  }
+}

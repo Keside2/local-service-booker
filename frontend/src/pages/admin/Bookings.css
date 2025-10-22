@@ -1,0 +1,446 @@
+.bookings-section {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.bookings-section h1 {
+  margin-bottom: 20px;
+}
+
+/* Controls */
+.bookings-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.bookings-controls input,
+.bookings-controls select,
+.bookings-controls button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Bulk actions */
+.bulk-actions {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.bulk-actions button {
+  padding: 6px 10px;
+  
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.actions1{
+  background-color: #ffbf00;
+}
+.actions1:hover{
+  background-color: #ffbf00e5;
+}
+
+.actions2{
+  background-color: #28a745;
+}
+.actions3{
+  background-color: red;
+}
+.actions2:hover{
+  background-color: #198332;
+}
+.actions3:hover{
+  background-color: rgb(209, 9, 9);
+}
+
+
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f4f4f4;
+}
+
+table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Actions buttons */
+table button {
+  margin-right: 5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+table button:hover {
+  opacity: 0.8;
+}
+
+table button:nth-child(1) {
+  background-color: #28a745;
+  color: white;
+}
+
+table button:nth-child(2) {
+  background-color: #dc3545;
+  color: white;
+}
+
+table button:nth-child(3) {
+  background-color: #17a2b8;
+  color: white;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #28a745;;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 8px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  margin-bottom: 8px;
+}
+
+.modal-content button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile card view */
+.bookings-cards {
+  display: none; /* Hidden on larger screens */
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.booking-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.booking-card h3 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.booking-card p {
+  margin: 4px 0;
+}
+
+.booking-card .status {
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.booking-card .status.pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.booking-card .status.approved {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.booking-card .status.completed {
+  background-color: #28a745;
+  color: white;
+}
+
+.booking-card .status.canceled {
+  background-color: #dc3545;
+  color: white;
+}
+
+.booking-card .card-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.booking-card .card-actions button {
+  flex: 1;
+  padding: 6px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for the status dropdown in the bookings table */
+.status-dropdown {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-dropdown:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.status-dropdown option {
+  padding: 8px;
+}
+
+/* Optional: different colors for statuses */
+.status-dropdown option[value="pending"] {
+  color: #ff9800; /* Orange */
+}
+
+.status-dropdown option[value="approved"] {
+  color: #007bff; /* Blue */
+}
+
+.status-dropdown option[value="completed"] {
+  color: #28a745; /* Green */
+}
+
+/* Mobile card view improvements */
+@media (max-width: 768px) {
+  table,
+  .users-table-container {
+    display: none; /* Keep table hidden on mobile */
+  }
+
+  .bookings-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .booking-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .booking-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .booking-card p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  .booking-card .status {
+    display: inline-block;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: capitalize;
+  }
+
+  .booking-card .status.pending {
+    background-color: #ffc107;
+    color: #212529;
+  }
+
+  .booking-card .status.approved {
+    background-color: #17a2b8;
+    color: white;
+  }
+
+  .booking-card .status.completed {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .booking-card .status-dropdown {
+    width: 100%;
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .booking-card .status-dropdown:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+
+  .booking-card .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .booking-card .card-actions button {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .booking-card .card-actions button:hover {
+    opacity: 0.85;
+  }
+
+  /* Optional: different colors for buttons */
+  .booking-card .card-actions button:nth-child(2) {
+    background-color: #17a2b8;
+    color: white;
+  }
+
+  .booking-card .card-actions button:nth-child(3) {
+    background-color:   #dc3545;
+    color: white;
+  }
+}
+
+/* Row styling for cancelled bookings */
+.row-cancelled {
+  background-color: #ffe6e6; /* light red/pink background */
+  color: #a00; /* dark red text */
+  font-style: italic;
+}
+
+/* Cancelled badge */
+.badge-cancelled {
+  display: inline-block;
+  background-color: #ff4d4f; /* red */
+  color: white;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+/* Dropdown styling for status */
+.status-dropdown {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.status-dropdown:hover {
+  border-color: #888;
+}
+
+/* Buttons styling */
+button {
+  margin-right: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Optional: table hover effect */
+tr:hover {
+  background-color: #f9f9f9;
+}
