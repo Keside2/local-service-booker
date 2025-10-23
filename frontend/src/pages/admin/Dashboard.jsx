@@ -1,6 +1,7 @@
 import "./Dashboard.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API from "../../api";
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
@@ -51,7 +52,7 @@ export default function AdminDashboard() {
       if (startDate) params.startDate = startDate;
       if (endDate) params.endDate = endDate;
 
-      const res = await axios.get("http://localhost:5000/api/admin/dashboard", {
+      const res = await API.get("/api/admin/dashboard", {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
@@ -68,7 +69,7 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/users", {
+      const response = await API.get("/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(response.data);
@@ -80,7 +81,7 @@ export default function AdminDashboard() {
   const deleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/users/${id}`, {
+      await API.delete(`/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();
