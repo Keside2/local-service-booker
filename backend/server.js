@@ -36,23 +36,25 @@ import { autoUnblockServices } from "./utils/autoUnblockServices.js";
 
 const app = express();
 
-// ✅ Allowed origins
 const allowedOrigins = [
-    "http://localhost:5173", // Vite frontend (local dev)
-    "http://localhost:3000", // React default dev port
-    "https://yourdomain.com",
-    "https://www.yourdomain.com"
+    "http://localhost:5173",              // local dev
+    "https://godwin-booking.netlify.app", // your Netlify frontend
 ];
 
-// app.use("/api/setup", setupAdminRoutes);
-
-// ✅ Global CORS middleware (applies to all routes)
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.log("❌ CORS blocked for:", origin);
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
+
 
 // ✅ Handle OPTIONS requests globally
 app.options("*", cors());
