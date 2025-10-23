@@ -53,7 +53,7 @@ function App() {
 
         <Routes>
           {/* 🔹 Redirect root ("/") to login */}
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/login" replace/>} />
 
           {/* 🔹 Public Routes */}
           <Route path="/login" element={<LoginPage />} />

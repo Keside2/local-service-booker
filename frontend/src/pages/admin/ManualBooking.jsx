@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../../pages/axiosInstance"; // ✅ use your axiosInstance
 import "../../styles/ManualBooking.css";
 
 export default function ManualBooking() {
@@ -22,17 +22,13 @@ export default function ManualBooking() {
     const fetchData = async () => {
       try {
         const [usersRes, servicesRes] = await Promise.all([
-          axios.get("/api/admin/users", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get("/api/admin/services", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          
+          axiosInstance.get("/admin/users"),
+          axiosInstance.get("/admin/services"),
         ]);
-       
-        setUsers(usersRes.data.users || []);
-        setServices(servicesRes.data);
+
+        // ✅ Defensive handling
+        setUsers(usersRes.data?.users || []);
+        setServices(Array.isArray(servicesRes.data) ? servicesRes.data : []);
       } catch (err) {
         console.error("Error fetching data:", err);
         toast.error("Failed to load users or services");
@@ -56,13 +52,15 @@ export default function ManualBooking() {
 
     setLoading(true);
     try {
-      const res = await axios.post(
-        "/api/admin/manual-booking",
-        form,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axiosInstance.post("/admin/manual-booking", form);
       toast.success(res.data.message || "Booking created successfully!");
-      setForm({ userId: "", serviceId: "", checkIn: "", checkOut: "", status: "pending" });
+      setForm({
+        userId: "",
+        serviceId: "",
+        checkIn: "",
+        checkOut: "",
+        status: "pending",
+      });
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Failed to create booking");
@@ -71,7 +69,7 @@ export default function ManualBooking() {
     }
   };
 
-   return (
+  return (
     <div className="manual-booking-container">
       <h2>Manual Booking (Admin)</h2>
 
@@ -81,11 +79,12 @@ export default function ManualBooking() {
           <label>Select User</label>
           <select name="userId" value={form.userId} onChange={handleChange}>
             <option value="">-- Choose a User --</option>
-            {users.map((u) => (
-              <option key={u._id} value={u._id}>
-                {u.name} ({u.email})
-              </option>
-            ))}
+            {Array.isArray(users) &&
+              users.map((u) => (
+                <option key={u._id} value={u._id}>
+                  {u.name} ({u.email})
+                </option>
+              ))}
           </select>
         </div>
 
@@ -94,11 +93,12 @@ export default function ManualBooking() {
           <label>Select Service</label>
           <select name="serviceId" value={form.serviceId} onChange={handleChange}>
             <option value="">-- Choose a Service --</option>
-            {services.map((s) => (
-              <option key={s._id} value={s._id} disabled={!s.isAvailable}>
-                {s.name} {s.isAvailable ? "" : " (Unavailable)"}
-              </option>
-            ))}
+            {Array.isArray(services) &&
+              services.map((s) => (
+                <option key={s._id} value={s._id} disabled={!s.isAvailable}>
+                  {s.name} {s.isAvailable ? "" : " (Unavailable)"}
+                </option>
+              ))}
           </select>
         </div>
 
