@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Auth.css";
+import API from "../api";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -19,8 +20,8 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/forgot-password",
+      const response = await API.post(
+        "/api/auth/forgot-password",
         { email: email.trim(), newPassword: newPassword.trim() },
         { headers: { "Content-Type": "application/json" } }
       );

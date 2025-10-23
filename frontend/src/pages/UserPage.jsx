@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../pages/axiosInstance";
+import API from "../api";
 
 export default function UserPage() {
   const [services, setServices] = useState([]);
@@ -9,7 +10,7 @@ export default function UserPage() {
   // Fetch all services
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/services", {
+      const res = await API.get("/api/services", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setServices(res.data);

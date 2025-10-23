@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Auth.css";
+import API from "../api";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -20,8 +21,8 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+      const response = await API.post(
+        "/api/auth/register",
         {
           name: name.trim(),
           email: email.trim(),
