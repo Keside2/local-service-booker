@@ -52,7 +52,7 @@ export default function AdminDashboard() {
       if (startDate) params.startDate = startDate;
       if (endDate) params.endDate = endDate;
 
-      const res = await API.get("/api/admin/dashboard", {
+      const res = await API.get("/admin/dashboard", {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await API.get("/api/admin/users", {
+      const response = await API.get("/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(response.data);
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
   const deleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await API.delete(`/api/admin/users/${id}`, {
+      await API.delete(`/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();

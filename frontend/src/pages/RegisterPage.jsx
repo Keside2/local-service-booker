@@ -22,7 +22,7 @@ export default function RegisterPage() {
 
     try {
       const response = await API.post(
-        "/api/auth/register",
+        "/auth/register",
         {
           name: name.trim(),
           email: email.trim(),

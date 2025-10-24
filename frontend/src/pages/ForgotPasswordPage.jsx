@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
 
     try {
       const response = await API.post(
-        "/api/auth/forgot-password",
+        "/auth/forgot-password",
         { email: email.trim(), newPassword: newPassword.trim() },
         { headers: { "Content-Type": "application/json" } }
       );
