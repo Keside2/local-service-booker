@@ -249,7 +249,6 @@ export default function Bookings() {
                     onChange={(e) => handleStatusChange(b._id, e.target.value)}
                   >
                     <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
@@ -285,23 +284,52 @@ export default function Bookings() {
       </div>
 
       {/* ✅ Modal */}
-      {showModal && selectedBooking && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Booking Details</h2>
-            <p><strong>User:</strong> {selectedBooking.user?.name}</p>
-            <p><strong>Email:</strong> {selectedBooking.user?.email}</p>
-            <p><strong>Service:</strong> {selectedBooking.service?.name}</p>
-            <p><strong>Price:</strong> {symbol}{selectedBooking.price || selectedBooking.service?.price}</p>
-            <p><strong>Check-In:</strong> {selectedBooking.checkIn ? new Date(selectedBooking.checkIn).toLocaleDateString() : "N/A"}</p>
-            <p><strong>Check-Out:</strong> {selectedBooking.checkOut ? new Date(selectedBooking.checkOut).toLocaleDateString() : "N/A"}</p>
-            <p><strong>Status:</strong> {selectedBooking.status}</p>
-            <div className="modal-actions">
-              <button onClick={closeModal}>Close</button>
-            </div>
-          </div>
+      {/* ✅ Mobile cards */}
+<div className="bookings-cards">
+  {bookings.map((b) => {
+    const duration =
+      b.checkIn && b.checkOut
+        ? Math.max(
+            1,
+            Math.ceil(
+              (new Date(b.checkOut) - new Date(b.checkIn)) /
+                (1000 * 60 * 60 * 24)
+            )
+          )
+        : null;
+
+    return (
+      <div className="booking-card" key={b._id}>
+        <h3>{b.user?.name || "N/A"}</h3>
+        <p><strong>Service:</strong> {b.service?.name || "N/A"}</p>
+        <p><strong>Check-In:</strong> {b.checkIn ? new Date(b.checkIn).toLocaleDateString() : "N/A"}</p>
+        <p><strong>Check-Out:</strong> {b.checkOut ? new Date(b.checkOut).toLocaleDateString() : "N/A"}</p>
+        <p><strong>Duration:</strong> {duration ? `${duration} day${duration > 1 ? "s" : ""}` : "N/A"}</p>
+        <p><strong>Price:</strong> {symbol}{b.price || b.service?.price || 0}</p>
+        <p><strong>Status:</strong> <span className={`status ${b.status}`}>{b.status}</span></p>
+        <div className="card-actions">
+          {b.status !== "cancelled" ? (
+            <select
+              className="status-dropdown"
+              value={b.status}
+              onChange={(e) => handleStatusChange(b._id, e.target.value)}
+            >
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          ) : (
+            <span className="badge-cancelled">Cancelled</span>
+          )}
+          <button onClick={() => openModal(b)}>View</button>
+          <button onClick={() => deleteBooking(b._id)}>Delete</button>
         </div>
-      )}
+      </div>
+    );
+  })}
+</div>
+
     </div>
   );
 }
