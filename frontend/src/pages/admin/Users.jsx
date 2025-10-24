@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Users.css";
+import API from "../api";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -37,7 +38,7 @@ export default function Users() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_URL}/users`, {
+      const res = await API.get(`${API_URL}/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data.users || []);
@@ -87,7 +88,7 @@ export default function Users() {
   const deleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await axios.delete(`${API_URL}/users/${id}`, {
+      await API.delete(`${API_URL}/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();
@@ -99,7 +100,7 @@ export default function Users() {
   const toggleUserStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === "active" ? "suspended" : "active";
     try {
-      await axios.put(
+      await API.put(
         `${API_URL}/users/${id}/status`,
         { status: newStatus },
         {
@@ -114,7 +115,7 @@ export default function Users() {
 
   const changeUserRole = async (id, role) => {
     try {
-      await axios.put(
+      await API.put(
         `${API_URL}/users/${id}/role`,
         { role },
         {
@@ -129,7 +130,7 @@ export default function Users() {
 
   const updateUser = async () => {
     try {
-      await axios.put(
+      await API.put(
         `${API_URL}/users/${selectedUser._id}`,
         {
           name: selectedUser.name,

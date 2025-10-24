@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CSVLink } from "react-csv";
 import { useCurrency } from "../../context/CurrencyContext";
+import API from "../api";
 
 export default function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -37,7 +38,7 @@ export default function Bookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_URL}/bookings`, {
+      const res = await API.get(`${API_URL}/bookings`, {
         params: { page: currentPage, limit, sort, status: statusFilter, search },
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,7 +65,7 @@ export default function Bookings() {
 
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
-      await axios.put(
+      await API.put(
         `${API_URL}/bookings/${bookingId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -80,7 +81,7 @@ export default function Bookings() {
     if (!selectedBookings.length)
       return toast.warning("Select at least one booking");
     try {
-      await axios.post(
+      await API.post(
         `${API_URL}/bookings/bulk-status`,
         { ids: selectedBookings, status },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -97,7 +98,7 @@ export default function Bookings() {
   const bulkDelete = async () => {
     if (!window.confirm("Delete selected bookings?")) return;
     try {
-      await axios.post(
+      await API.post(
         `${API_URL}/bookings/bulk-delete`,
         { ids: selectedBookings },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -114,7 +115,7 @@ export default function Bookings() {
   const deleteBooking = async (id) => {
     if (!window.confirm("Delete this booking?")) return;
     try {
-      await axios.delete(`${API_URL}/bookings/${id}`, {
+      await API.delete(`${API_URL}/bookings/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Booking deleted");
