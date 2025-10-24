@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Bookings.css";
-import API from "../api";
+import API from "../../api";
 
 export default function Bookings() {
   const [bookings, setBookings] = useState([]);
