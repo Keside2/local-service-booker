@@ -37,23 +37,24 @@ import { autoUnblockServices } from "./utils/autoUnblockServices.js";
 const app = express();
 
 const allowedOrigins = [
-    "http://localhost:5173",              // local dev
-    "https://godwin-booking.netlify.app", // your Netlify frontend
+    "http://localhost:5173",                            // local dev
+    "https://godwin-booking.netlify.app",               // old Netlify site
+    "https://local-service-booker-frontend.onrender.com" // new Render frontend
 ];
 
+
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.some(url => origin.startsWith(url))) {
             callback(null, true);
         } else {
             console.log("❌ CORS blocked for:", origin);
             callback(new Error("Not allowed by CORS"));
         }
     },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+    credentials: true,
 }));
+
 
 
 // ✅ Handle OPTIONS requests globally
