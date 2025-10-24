@@ -2,9 +2,21 @@ import axios from "axios";
 
 const API = axios.create({
     baseURL:
-        import.meta.env.MODE === "development"
-            ? "http://localhost:5000"
-            : "https://local-service-booker-api.onrender.com",
+        import.meta.env.VITE_API_URL ||
+        (window.location.hostname === "localhost"
+            ? "http://localhost:5000/api"
+            : "https://local-service-booker-api.onrender.com/api"),
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+API.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 export default API;

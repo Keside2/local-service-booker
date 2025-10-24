@@ -4,12 +4,17 @@ import { toast } from "react-toastify";
 import "./Settings.css";
 import { useCurrency } from "../../context/CurrencyContext";
 
+// ✅ Dynamic backend URL (works everywhere)
+const backendURL =
+  import.meta.env.VITE_API_URL?.replace("/api", "") ||
+  (window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://local-service-booker-api.onrender.com");
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [loadingProfile, setLoadingProfile] = useState(false);
 
-  // Forms
   const [profileForm, setProfileForm] = useState({ name: "", email: "", phone: "" });
   const [businessForm, setBusinessForm] = useState({ name: "", contactEmail: "", phone: "" });
   const [prefForm, setPrefForm] = useState({
@@ -22,17 +27,12 @@ const Settings = () => {
   const { changeCurrency } = useCurrency();
   const [passwordForm, setPasswordForm] = useState({ currentPassword: "", newPassword: "" });
 
-  // Profile picture
   const [profilePic, setProfilePic] = useState("");
   const [previewPic, setPreviewPic] = useState("");
   const [uploadingPic, setUploadingPic] = useState(false);
 
-  // Password visibility
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-
-  
-
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -60,17 +60,17 @@ const Settings = () => {
             timezone: a.timezone || "UTC",
           });
           setBookingForm({
-    slotDuration: a.bookingSettings?.slotDuration || 30,
-    workingHours: a.bookingSettings?.workingHours || "9AM - 5PM",
-  });
+            slotDuration: a.bookingSettings?.slotDuration || 30,
+            workingHours: a.bookingSettings?.workingHours || "9AM - 5PM",
+          });
 
-  setPaymentForm({
-    stripeKey: a.paymentSettings?.stripeKey || "",
-    currency: a.paymentSettings?.currency || "USD",
-  });
+          setPaymentForm({
+            stripeKey: a.paymentSettings?.stripeKey || "",
+            currency: a.paymentSettings?.currency || "USD",
+          });
 
           setProfilePic(a.logo || "");
-          setPreviewPic(a.logo ? `http://localhost:5000${a.logo}` : "");
+          setPreviewPic(a.logo ? `${backendURL}${a.logo}` : "");
         }
       } catch (err) {
         toast.error(err.response?.data?.message || "Failed to load settings");
@@ -81,84 +81,43 @@ const Settings = () => {
     fetchProfile();
   }, []);
 
-  // Handlers
-// const handleProfilePicUpload = async (e) => {
-//   const file = e.target.files[0];
-//   if (!file) return;
-
-//   const formData = new FormData();
-//   formData.append("profilePic", file); // make sure this matches backend uploadMiddleware.js
-
-//   try {
-//     setUploadingPic(true);
-//     const { data } = await axiosInstance.put("/admin/settings/profile-picture", formData, {
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
-
-//     // ✅ Update preview
-//     setProfilePic(data.profilePic);
-//     setPreviewPic(`http://localhost:5000${data.profilePic}`);
-
-//     // ✅ Update localStorage user object
-//     const storedUser = JSON.parse(localStorage.getItem("user"));
-//     const updatedUser = { ...storedUser, logo: data.profilePic };
-//     localStorage.setItem("user", JSON.stringify(updatedUser));
-
-//     toast.success("Profile picture updated");
-//   } catch (error) {
-//     toast.error(error.response?.data?.message || "Failed to upload picture");
-//   } finally {
-//     setUploadingPic(false);
-//   }
-// };
-
-// Upload profile picture
+  // ✅ Upload profile picture
   const handleProfilePicUpload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const formData = new FormData();
-  formData.append("profilePic", file);
+    const formData = new FormData();
+    formData.append("profilePic", file);
 
-  try {
-    setUploadingPic(true);
-    const { data } = await axiosInstance.put("/admin/settings/profile-picture", formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "multipart/form-data"
-      },
-    });
+    try {
+      setUploadingPic(true);
+      const { data } = await axiosInstance.put("/admin/settings/profile-picture", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    if (data?.admin) {
-      // ✅ Sync state + preview
-      setProfilePic(data.admin.logo);
-      setPreviewPic(`http://localhost:5000${data.admin.logo}`);
-
-      // ✅ Update localStorage (so sidebar sees it)
-      localStorage.setItem("user", JSON.stringify(data.admin));
-
-      toast.success("Profile picture updated successfully");
+      if (data?.admin) {
+        setProfilePic(data.admin.logo);
+        setPreviewPic(`${backendURL}${data.admin.logo}`);
+        localStorage.setItem("user", JSON.stringify(data.admin));
+        toast.success("Profile picture updated successfully");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error(error.response?.data?.message || "Failed to upload profile picture");
+    } finally {
+      setUploadingPic(false);
     }
-  } catch (error) {
-    console.error("Upload error:", error);
-    toast.error(error.response?.data?.message || "Failed to upload profile picture");
-  } finally {
-    setUploadingPic(false);
-  }
-};
+  };
 
-
-
+  // ✅ Profile update handlers
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axiosInstance.put("/admin/settings/profile", profileForm);
-      if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin)); // ✅ keep sidebar synced
-    }
+      if (data?.admin) localStorage.setItem("user", JSON.stringify(data.admin));
       toast.success(data.message);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update profile");
@@ -173,9 +132,7 @@ const Settings = () => {
         contactEmail: businessForm.contactEmail,
         phone: businessForm.phone,
       });
-      if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin)); // ✅ keep sidebar synced
-    }
+      if (data?.admin) localStorage.setItem("user", JSON.stringify(data.admin));
       toast.success(data.message);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update business info");
@@ -186,9 +143,7 @@ const Settings = () => {
     e.preventDefault();
     try {
       const { data } = await axiosInstance.put("/admin/settings/password", passwordForm);
-      if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin)); // ✅ keep sidebar synced
-    }
+      if (data?.admin) localStorage.setItem("user", JSON.stringify(data.admin));
       toast.success(data.message);
       setPasswordForm({ currentPassword: "", newPassword: "" });
     } catch (err) {
@@ -200,9 +155,7 @@ const Settings = () => {
     e.preventDefault();
     try {
       const { data } = await axiosInstance.put("/admin/settings/preferences", prefForm);
-      if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin)); // ✅ keep sidebar synced
-    }
+      if (data?.admin) localStorage.setItem("user", JSON.stringify(data.admin));
       toast.success(data.message);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update preferences");
@@ -213,9 +166,7 @@ const Settings = () => {
     e.preventDefault();
     try {
       const { data } = await axiosInstance.put("/admin/settings/booking", bookingForm);
-      if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin)); // ✅ keep sidebar synced
-    }
+      if (data?.admin) localStorage.setItem("user", JSON.stringify(data.admin));
       toast.success(data.message);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update booking settings");
@@ -223,23 +174,19 @@ const Settings = () => {
   };
 
   const handlePaymentUpdate = async (e) => {
-  e.preventDefault();
-  try {
-    const { data } = await axiosInstance.put("/admin/settings/payments", paymentForm);
-    if (data?.admin) {
-      localStorage.setItem("user", JSON.stringify(data.admin));
-
-      // ✅ Update global currency context
-      changeCurrency(paymentForm.currency);
+    e.preventDefault();
+    try {
+      const { data } = await axiosInstance.put("/admin/settings/payments", paymentForm);
+      if (data?.admin) {
+        localStorage.setItem("user", JSON.stringify(data.admin));
+        changeCurrency(paymentForm.currency);
+      }
+      toast.success(data.message);
+      setTimeout(() => window.location.reload(), 800);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update payment settings");
     }
-    toast.success(data.message);
-    setTimeout(() => {
-  window.location.reload();
-}, 800);
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Failed to update payment settings");
-  } 
-};
+  };
 
 
   return (
@@ -248,10 +195,10 @@ const Settings = () => {
 
       {/* Profile Picture */}
       <div className="profile-pic-section">
-        <img
-             src={previewPic || (profilePic ? `http://localhost:5000${profilePic}` : "/default-avatar.png")}
-            alt="Profile"
-            className="profile-pic"
+         <img
+          src={previewPic || (profilePic ? `${backendURL}${profilePic}` : "/default-avatar.png")}
+          alt="Profile"
+          className="profile-pic"
         />
         <label className="upload-btn">
           {uploadingPic ? "Uploading..." : "Change Picture"}
